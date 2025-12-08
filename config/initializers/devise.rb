@@ -314,13 +314,7 @@ Devise.setup do |config|
 
   # ==> JWT Configuration
   config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.devise_jwt_secret_key || Rails.application.credentials.secret_key_base
-    jwt.dispatch_requests = [
-      ["POST", %r{^/graphql$}]
-    ]
-    jwt.revocation_requests = [
-      ["POST", %r{^/graphql$}]
-    ]
+    jwt.secret = Rails.application.credentials.devise_jwt_secret_key || Rails.application.secret_key_base
     jwt.expiration_time = 1.day.to_i
   end
 end

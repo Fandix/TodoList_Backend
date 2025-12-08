@@ -8,7 +8,7 @@ class GraphqlController < ApplicationController
     context = {
       current_user: current_user
     }
-    result = MoneyForwardSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = TodoListSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -18,12 +18,17 @@ class GraphqlController < ApplicationController
   private
 
   def current_user
-    return nil unless request.headers["Authorization"].present?
+    auth_header = request.headers["Authorization"]
+    return nil unless auth_header.present?
 
-    token = request.headers["Authorization"].split(" ").last
+    token = auth_header.split(" ").last
     decoded = Warden::JWTAuth::UserDecoder.new.call(token, :user, nil)
     decoded
-  rescue JWT::DecodeError, Warden::JWTAuth::Errors::RevokedToken
+  rescue JWT::DecodeError => e
+    Rails.logger.info "JWT::DecodeError: #{e.message}"
+    nil
+  rescue Warden::JWTAuth::Errors::RevokedToken => e
+    Rails.logger.info "RevokedToken: #{e.message}"
     nil
   end
 

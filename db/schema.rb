@@ -10,7 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_08_090705) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_08_100656) do
+  create_table "missions", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.boolean "completed", default: false, null: false
+    t.datetime "due_date"
+    t.integer "priority", default: 0, null: false
+    t.string "category"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_missions_on_category"
+    t.index ["completed"], name: "index_missions_on_completed"
+    t.index ["due_date"], name: "index_missions_on_due_date"
+    t.index ["priority"], name: "index_missions_on_priority"
+    t.index ["user_id"], name: "index_missions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -24,4 +41,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_090705) do
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "missions", "users"
 end
