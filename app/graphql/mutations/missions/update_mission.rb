@@ -13,14 +13,9 @@ module Mutations
         attributes = input.to_h
         id = attributes.delete(:id)
 
-        mission = user.missions.find_by(id: id)
-        return { mission: nil, errors: [ "Mission not found" ] } unless mission
+        result = ::Missions::UpdateService.new(user: user, id: id, params: attributes).call
 
-        if mission.update(attributes)
-          { mission: mission, errors: [] }
-        else
-          { mission: nil, errors: mission.errors.full_messages }
-        end
+        { mission: result.mission, errors: result.errors }
       end
     end
   end

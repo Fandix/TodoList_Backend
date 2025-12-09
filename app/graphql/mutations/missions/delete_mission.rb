@@ -10,15 +10,9 @@ module Mutations
 
       def resolve(id:)
         user = require_authenticated_user!
+        result = ::Missions::DeleteService.new(user: user, id: id).call
 
-        mission = user.missions.find_by(id: id)
-        return { success: false, errors: [ "Mission not found" ] } unless mission
-
-        if mission.destroy
-          { success: true, errors: [] }
-        else
-          { success: false, errors: mission.errors.full_messages }
-        end
+        { success: result.success?, errors: result.errors }
       end
     end
   end

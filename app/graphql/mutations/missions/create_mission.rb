@@ -10,13 +10,9 @@ module Mutations
 
       def resolve(input:)
         user = require_authenticated_user!
-        mission = user.missions.build(input.to_h)
+        result = ::Missions::CreateService.new(user: user, params: input.to_h).call
 
-        if mission.save
-          { mission: mission, errors: [] }
-        else
-          { mission: nil, errors: mission.errors.full_messages }
-        end
+        { mission: result.mission, errors: result.errors }
       end
     end
   end
