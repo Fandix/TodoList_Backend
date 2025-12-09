@@ -1,8 +1,9 @@
 class Mission < ApplicationRecord
   belongs_to :user
 
-  validates :title, presence: true
-  validates :priority, numericality: { in: 0..3 }
+  validates :title, presence: true, length: { maximum: 100 }
+  validates :description, length: { maximum: 1000 }, allow_blank: true
+  validates :priority, numericality: { only_integer: true, in: 0..3 }
 
   scope :completed, -> { where(completed: true) }
   scope :pending, -> { where(completed: false) }

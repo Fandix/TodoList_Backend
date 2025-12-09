@@ -14,6 +14,7 @@ module Resolvers
       argument :offset, Integer, required: false, description: "Number of missions to skip"
 
       DEFAULT_LIMIT = 50
+      MAX_LIMIT = 100
 
       def resolve(completed: nil, category: nil, search: nil, sort_by: nil, sort_order: nil, limit: nil, offset: nil)
         user = require_authenticated_user!
@@ -28,7 +29,7 @@ module Resolvers
 
         sort_by ||= :created_at
         sort_order ||= :desc
-        limit = (limit || DEFAULT_LIMIT)
+        limit = [ [ (limit || DEFAULT_LIMIT).to_i, 1 ].max, MAX_LIMIT ].min
         offset = [ offset.to_i, 0 ].max
 
         scope.order(sort_by => sort_order).offset(offset).limit(limit)
