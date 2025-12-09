@@ -7,10 +7,7 @@ module Types
       context[:current_user]
     end
 
-    field :missions,
-          resolver: Resolvers::Missions::MissionsQuery,
-          connection: true,
-          connection_type_class: Types::Mission::MissionConnectionType
+    field :missions, resolver: Resolvers::Missions::MissionsQuery
     field :mission, resolver: Resolvers::Missions::MissionQuery
   end
 end
