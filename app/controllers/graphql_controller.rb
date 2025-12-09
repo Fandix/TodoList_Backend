@@ -21,14 +21,34 @@ class GraphqlController < ApplicationController
     auth_header = request.headers["Authorization"]
     return nil unless auth_header.present?
 
-    token = auth_header.split(" ").last
-    decoded = Warden::JWTAuth::UserDecoder.new.call(token, :user, nil)
-    decoded
+    token = extract_bearer_token(auth_header)
+    return nil unless token
+
+    decode_jwt_token(token)
+  end
+
+  def extract_bearer_token(auth_header)
+    parts = auth_header.split(" ")
+    return nil unless parts.length == 2
+    return nil unless parts[0].casecmp("bearer").zero?
+    return nil if parts[1].length > 500
+
+    parts[1]
+  end
+
+  def decode_jwt_token(token)
+    Warden::JWTAuth::UserDecoder.new.call(token, :user, nil)
   rescue JWT::DecodeError => e
-    Rails.logger.info "JWT::DecodeError: #{e.message}"
+    Rails.logger.warn("JWT::DecodeError: #{e.message}")
     nil
-  rescue Warden::JWTAuth::Errors::RevokedToken => e
-    Rails.logger.info "RevokedToken: #{e.message}"
+  rescue JWT::ExpiredSignature
+    Rails.logger.warn("JWT token expired")
+    nil
+  rescue Warden::JWTAuth::Errors::RevokedToken
+    Rails.logger.warn("JWT token revoked")
+    nil
+  rescue StandardError => e
+    Rails.logger.error("Unexpected JWT error: #{e.class} - #{e.message}")
     nil
   end
 
