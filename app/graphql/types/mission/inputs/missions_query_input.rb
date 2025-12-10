@@ -10,6 +10,7 @@ module Types
         argument :completed, Boolean, required: false, description: "Filter by completion status"
         argument :category, String, required: false, description: "Filter by category"
         argument :search, String, required: false, description: "Search by title"
+        argument :priority, Integer, required: false, description: "Filter by priority"
 
         # Sorting
         argument :sort_by, Types::Enums::MissionSortEnum, required: false, description: "Sort by field"

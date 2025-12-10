@@ -22,6 +22,7 @@ module Resolvers
         scope = user.missions
         scope = scope.where(completed: params[:completed]) unless params[:completed].nil?
         scope = scope.where(category: params[:category]) if params[:category].present?
+        scope = scope.where(priority: params[:priority]) if params[:priority].present?
         if params[:search].present?
           pattern = "%#{params[:search].downcase}%"
           scope = scope.where("LOWER(title) LIKE :pattern", pattern: pattern)
