@@ -23,6 +23,8 @@ A production-ready RESTful API built with Ruby on Rails 7 and GraphQL for task m
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
+- [Security](#security)
+- [CI/CD](#cicd)
 
 ---
 
@@ -393,6 +395,59 @@ The API implements rate limiting to prevent abuse:
 
 CORS is configured to allow requests from specified origins only. Update `CORS_ORIGINS` environment variable to whitelist your frontend domain.
 
+---
+
+## 🔄 CI/CD
+
+This project uses GitHub Actions for continuous integration and deployment.
+
+### Automated Workflows
+
+The CI pipeline runs automatically on:
+- Push to `main` branch
+- Pull requests to any branch
+
+### CI Jobs
+
+1. **Security Scan (`scan_ruby`)**
+   - Runs Brakeman static analysis
+   - Detects common Rails security vulnerabilities
+   - Fails if critical issues found
+
+2. **Code Linting (`lint`)**
+   - Runs RuboCop style checker
+   - Enforces Ruby style guide
+   - Reports violations in GitHub UI
+
+3. **Test Suite (`test`)**
+   - Sets up Ruby 3.3.3 environment
+   - Creates and loads test database schema
+   - Runs full RSpec test suite
+   - All tests must pass for PR approval
+
+4. **Docker Build (`docker`)**
+   - Builds Docker image with layer caching
+   - Tests Docker Compose setup
+   - Verifies database migrations work in container
+   - Checks API health endpoint
+
+### Viewing CI Results
+
+Check the "Actions" tab in GitHub to view:
+- Build logs and test results
+- Security scan reports
+- Code style violations
+- Docker build status
+
+### CI Configuration
+
+The workflow configuration is in `.github/workflows/ci.yml`. Key features:
+- Parallel job execution for faster feedback
+- Bundler caching for dependency installation
+- GitHub Actions cache for Docker layers
+- Automatic dependency updates via Dependabot
+
+---
 
 ## 📞 Support
 
