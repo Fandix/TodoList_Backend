@@ -1,18 +1,17 @@
-version: '3.8'
-
 services:
   # Rails API service
   web:
     build:
       context: .
       dockerfile: Dockerfile
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+    command: ["./bin/rails", "server", "-b", "0.0.0.0"]
     volumes:
       - .:/rails
       - bundle_cache:/usr/local/bundle
       - db_data:/rails/db
       - log_data:/rails/log
       - tmp_data:/rails/tmp
+      - storage_data:/rails/storage
     ports:
       - "3000:3000"
     environment:
@@ -32,6 +31,8 @@ volumes:
   log_data:
     driver: local
   tmp_data:
+    driver: local
+  storage_data:
     driver: local
 
 networks:

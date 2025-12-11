@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+# Ensure required directories exist with correct permissions
+mkdir -p db log storage tmp
+
 # Enable jemalloc for reduced memory usage and latency.
 if [ -z "${LD_PRELOAD+x}" ] && [ -f /usr/lib/*/libjemalloc.so.2 ]; then
   export LD_PRELOAD="$(echo /usr/lib/*/libjemalloc.so.2)"
@@ -7,6 +10,10 @@ fi
 
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  # Remove any leftover server PID file
+  rm -f tmp/pids/server.pid
+
+  # Prepare database (create if doesn't exist, migrate if needed)
   ./bin/rails db:prepare
 fi
 

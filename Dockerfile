@@ -42,6 +42,9 @@ COPY . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
+# Ensure required directories exist
+RUN mkdir -p db log storage tmp
+
 
 
 

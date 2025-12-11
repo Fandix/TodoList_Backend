@@ -25,6 +25,9 @@ module TodoList
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Tell Zeitwerk to ignore GraphQL concerns directory to avoid conflicts with require_relative
+    Rails.autoloaders.main.ignore(Rails.root.join("app/graphql/concerns"))
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
