@@ -15,7 +15,7 @@ module Mutations
 
         result = ::Missions::UpdateService.new(user: user, id: id, params: attributes).call
 
-        { mission: result.mission, errors: result.errors }
+        { mission: result.data, errors: result.errors }
       end
     end
   end

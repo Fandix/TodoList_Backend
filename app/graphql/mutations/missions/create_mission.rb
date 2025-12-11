@@ -12,7 +12,7 @@ module Mutations
         user = require_authenticated_user!
         result = ::Missions::CreateService.new(user: user, params: input.to_h).call
 
-        { mission: result.mission, errors: result.errors }
+        { mission: result.data, errors: result.errors }
       end
     end
   end

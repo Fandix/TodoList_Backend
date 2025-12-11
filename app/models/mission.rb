@@ -1,11 +1,11 @@
 class Mission < ApplicationRecord
+  include MissionConstants
+
   belongs_to :user
 
-  VALID_CATEGORIES = %w[work personal shopping health other].freeze
-
-  validates :title, presence: true, length: { maximum: 100 }
-  validates :description, length: { maximum: 1000 }, allow_blank: true
-  validates :priority, numericality: { only_integer: true, in: 0..3 }
+  validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
+  validates :description, length: { maximum: MAX_DESCRIPTION_LENGTH }, allow_blank: true
+  validates :priority, numericality: { only_integer: true, in: MIN_PRIORITY..MAX_PRIORITY }
   validates :category, inclusion: { in: VALID_CATEGORIES, message: "must be one of: #{VALID_CATEGORIES.join(', ')}" }, allow_blank: true
   validate :due_date_cannot_be_in_past, if: -> { due_date.present? && due_date_changed? }
 

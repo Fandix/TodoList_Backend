@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Missions
-  class CreateService
-    Result = Struct.new(:success?, :mission, :errors, keyword_init: true)
-
+  class CreateService < ApplicationService
     def initialize(user:, params:)
       @user = user
       @params = params
@@ -13,9 +11,9 @@ module Missions
       mission = @user.missions.build(@params)
 
       if mission.save
-        Result.new(success?: true, mission: mission, errors: [])
+        success(mission)
       else
-        Result.new(success?: false, mission: nil, errors: mission.errors.full_messages)
+        failure(mission.errors.full_messages)
       end
     end
   end
