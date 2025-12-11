@@ -159,6 +159,7 @@ GEM
       date
       net-protocol
     net-pop (0.1.2)
+      net-protocol
     net-protocol (0.2.2)
       timeout
     net-smtp (0.5.1)
@@ -356,6 +357,7 @@ DEPENDENCIES
   rack-attack
   rack-cors
   rails (~> 7.2.3)
+  redis (>= 4.0.1)
   rspec-rails
   rubocop-rails-omakase
   shoulda-matchers

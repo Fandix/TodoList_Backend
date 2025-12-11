@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Rails API service
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+      - db_data:/rails/db
+      - log_data:/rails/log
+      - tmp_data:/rails/tmp
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=${RAILS_ENV:-development}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3001}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-development_secret_key_base_please_change_in_production}
+    networks:
+      - todolist_network
+    stdin_open: true
+    tty: true
+
+volumes:
+  bundle_cache:
+    driver: local
+  db_data:
+    driver: local
+  log_data:
+    driver: local
+  tmp_data:
+    driver: local
+
+networks:
+  todolist_network:
+    driver: bridge

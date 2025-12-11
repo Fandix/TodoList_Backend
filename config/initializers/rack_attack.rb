@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Rack::Attack
-  # cache
   Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
   def self.graphql_operation_name(req)
