@@ -4,7 +4,7 @@ module Mutations
   module Auth
     class SignOut < BaseMutation
       field :success, Boolean, null: false
-      field :errors, [String], null: false
+      field :errors, [ String ], null: false
 
       def resolve
         user = context[:current_user]
@@ -19,7 +19,7 @@ module Mutations
         else
           {
             success: false,
-            errors: ["Not authenticated"]
+            errors: [ "Not authenticated" ]
           }
         end
       end

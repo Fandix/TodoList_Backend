@@ -55,5 +55,3 @@ group :development, :test do
   gem "faker"
   gem "shoulda-matchers"
 end
-
-
