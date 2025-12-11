@@ -357,7 +357,6 @@ DEPENDENCIES
   rack-attack
   rack-cors
   rails (~> 7.2.3)
-  redis (>= 4.0.1)
   rspec-rails
   rubocop-rails-omakase
   shoulda-matchers
