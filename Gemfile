@@ -37,7 +37,7 @@ gem "devise"
 gem "devise-jwt"
 
 # GraphQL
-gem "graphql", "~> 2.4"
+gem "graphql", "~> 2.5"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
